@@ -6,14 +6,14 @@ from simple_diarizer.diarizer import Diarizer
 from simple_diarizer.utils import combined_waveplot
 
 
-def diraize(wav_file: str):
+def diarize(wav_file: str):
     diar = Diarizer(
         embed_model='ecapa',  # 'xvec' and 'ecapa' supported
         cluster_method='ahc'  # 'ahc' and 'sc' supported
     )
     segments = diar.diarize(wav_file=wav_file,
                             num_speakers=2,
-                            outfile=f'{wav_file.rstrip(".wav")}.rttm')
+                            outfile=f'{wav_file.rstrip(".wav")}_simple.rttm')
     print(segments)
     signal, fs = sf.read(wav_file)
     combined_waveplot(signal, fs, segments)
@@ -25,7 +25,7 @@ def main(args):
         sys.stderr.write(
             'Usage: run_simple_diarize.py <path to wav file>\n')
         sys.exit(1)
-    diraize(args[0])
+    diarize(args[0])
 
 
 if __name__ == '__main__':
