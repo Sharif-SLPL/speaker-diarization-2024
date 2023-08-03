@@ -14,7 +14,7 @@ def diarize(wav_file: str):
     segments = diar.diarize(wav_file=wav_file,
                             num_speakers=2,
                             outfile=f'{wav_file.rstrip(".wav")}_simple.rttm')
-    print(segments)
+    # print(segments)
     # signal, fs = sf.read(wav_file)
     # combined_waveplot(signal, fs, segments)
     # plt.show()
