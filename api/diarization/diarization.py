@@ -1,6 +1,11 @@
-def diarize(audio_file):
+import os
+from .diarization_model import run_simple_diarizer as model_diarize
 
-    file_path = audio_file.temporary_file_path()
-    print("=====", file_path)
+def diarize(audio_path):
+    # print(audio_file)
+    # file_path = audio_file.temporary_file_path()
+    audio_path = '.' + audio_path
+    print("=====", audio_path)
+    segments = model_diarize.diarize(audio_path)
     
-    return audio_file
+    return segments

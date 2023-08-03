@@ -3,6 +3,10 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from rest_framework.response import Response
+
+# from api.diarization.diarization import diarize
+from .diarization import diarize
+
 from .serializers import VoiceSerializer
 from rest_framework.views import APIView
 from rest_framework import status
@@ -14,4 +18,6 @@ class VoiceAPIView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        print(serializer.data['audio_file'])
+        result = diarize(serializer.data['audio_file'])
+        return Response(result, status=status.HTTP_200_OK)

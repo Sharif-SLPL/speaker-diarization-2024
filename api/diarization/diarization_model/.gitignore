@@ -1,0 +1,7 @@
+__pycache__
+
+pretrained_models
+
+*.wav
+*.png
+*.rttm
