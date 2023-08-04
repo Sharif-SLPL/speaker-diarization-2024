@@ -18,9 +18,6 @@ os.environ['HTTP_PROXY'] = proxy
 os.environ['https_proxy'] = proxy
 os.environ['HTTPS_PROXY'] = proxy
 
-load_dotenv()
-token = os.getenv('TELEGRAM_TOKEN')
-
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -74,6 +71,9 @@ async def handle_audio_file(update: Update, context: CallbackContext):
 
 
 if __name__ == '__main__':
+    load_dotenv()
+    token = os.getenv('TELEGRAM_TOKEN')
+    
     application = ApplicationBuilder().token(token).build()
 
     application.add_handler(CommandHandler('start', start))
@@ -82,33 +82,3 @@ if __name__ == '__main__':
     application.add_handler(MessageHandler(filters.Document.Category("audio/"), handle_audio_file))
 
     application.run_polling()
-
-
-# import asyncio
-# import telegram
-# import os
-
-
-# proxy = 'http://127.0.0.1:1082'
-# proxy = 'socks5://127.0.0.1:1081'
-
-# os.environ['http_proxy'] = proxy
-# os.environ['HTTP_PROXY'] = proxy
-# os.environ['https_proxy'] = proxy
-# os.environ['HTTPS_PROXY'] = proxy
-
-# token = "6457164161:AAF2yWcZuWY3mFkjS_q6gaQSbfdSKwY-dgU"
-
-
-# async def main():
-#     print("in main ...")
-#     bot = telegram.Bot(token)
-#     print("intiatate.")
-#     async with bot:
-#         print(await bot.get_me())
-#         print((await bot.get_updates())[0])
-
-
-# if __name__ == '__main__':
-#     print("running in main ...")
-#     asyncio.run(main())
