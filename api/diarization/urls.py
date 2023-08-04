@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import VoiceAPIView
+from .views import VoiceRttmAPIView, VoicePlotAPIView
 
 
 urlpatterns = [
-    path("voice", VoiceAPIView.as_view()),
+    path("rttm", VoiceRttmAPIView.as_view()),
+    path("plot", VoicePlotAPIView.as_view()),
 ]

@@ -32,7 +32,9 @@ async def handle_voice(update: Update, context: CallbackContext):
     await new_file.download_to_memory(out)
     out.seek(0)
     result = d.diarize(out)
-    await update.message.reply_text(result)
+    # await update.message.reply_text(result)
+    await context.bot.send_photo(update.message.chat_id, photo=result)
+    out.close()
     # resultFile = io.StringIO(result)
     # await context.bot.send_document(update.message.chat_id, resultFile)
 
