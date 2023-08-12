@@ -26,7 +26,9 @@ async def handle_diarization(update: Update, context: CallbackContext, file):
     await file.download_to_memory(out)
     out.seek(0)
     result = d.diarize(out)
-    await context.bot.send_photo(update.message.chat_id, photo=result)
+    parsed = d.parse_diarize_result(result)
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=parsed)
+    # await context.bot.send_photo(update.message.chat_id, photo=result)
     out.close()
 
 

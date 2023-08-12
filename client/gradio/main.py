@@ -12,17 +12,6 @@ from PIL import Image
 # diarization_api = os.getenv('')
 
 
-def parse_diarize_result(diarize_result):
-    print(diarize_result)
-    lines = []
-    for row in diarize_result:
-        line = f'گوینده {row["speaker"]} از {row["start"]} تا {row["end"]}:\n{row["text"]}'
-        lines.append(line)
-    parsed = '\n\n'.join(lines)
-    return parsed
-
-
-
 def handle_process_btn(recorded, uploaded):
     if recorded:
         audio_path = recorded
@@ -32,7 +21,7 @@ def handle_process_btn(recorded, uploaded):
         return "record or upload an audio file"
     audio_file = open(audio_path, "rb")
     result = d.diarize(audio_file)
-    return parse_diarize_result(result)
+    return d.parse_diarize_result(result)
 
 
 def handle_process_btn_image(recorded, uploaded):
