@@ -18,7 +18,7 @@ logging.basicConfig(
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi\send me a vocie, i recognize speackers in that vocie :)")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi\send me a vocie, i recognize speackers in the vocie :)")
 
 
 async def handle_diarization(update: Update, context: CallbackContext, file):

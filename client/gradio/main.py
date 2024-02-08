@@ -5,9 +5,6 @@ from dotenv import load_dotenv
 import diarization as d
 from PIL import Image
 
-# DIARIZATION_API = "localho"
-
-
 # load_dotenv()
 # diarization_api = os.getenv('')
 
@@ -48,10 +45,9 @@ with gr.Blocks() as demo:
             source="microphone", type="filepath", label="record")
         uploaded_audio = gr.Audio(type="filepath", label="from drive")
     process_btn = gr.Button("Process")
-    # output = gr.Image(type="pil", label="result")
     output = gr.Textbox(label="result")
     process_btn.click(fn=handle_process_btn, inputs=[
                       recorded_audio, uploaded_audio], outputs=output, api_name="process")
 
 
-demo.launch()
+demo.launch(share=False)
