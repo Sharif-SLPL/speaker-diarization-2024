@@ -6,6 +6,7 @@ pretrained_models
 *.png
 *.rttm
 *.ogg
+*.mp3
 
 */media
 

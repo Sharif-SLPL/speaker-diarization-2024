@@ -53,7 +53,7 @@ def test_rttm(result_list, expected_list):
         else:
             expected_index += 1
             result_index += 1
-    print(errors_count, errors_duration)
+    print(f'result count:{len(result_list)}, expected count:{len(expected_list)}, errors_count:{errors_count}, errors_duration:{errors_duration}s')
 
 
 def test_audio_file(audio_path, rttm_path):
