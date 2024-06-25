@@ -22,6 +22,12 @@ from .models import Task
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
+import os
+from django.conf import settings
+
+PROJECT_BASE_PATH = str(settings.BASE_DIR)
+
+
 task_id_param = openapi.Parameter('task_id', openapi.IN_QUERY, description="task id", type=openapi.TYPE_STRING)
 task_response = openapi.Response('response description', TaskSerializer)
 
@@ -33,7 +39,7 @@ class VoiceRttmAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         print(serializer.data['audio_file'])
-        result = diarize('.' + serializer.data['audio_file'])
+        result = diarize(PROJECT_BASE_PATH + serializer.data['audio_file'])
         return Response(result, status=status.HTTP_200_OK)
 
 
@@ -45,7 +51,7 @@ class VoicePlotAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         print(serializer.data['audio_file'])
-        result = diarize_plot('.' + serializer.data['audio_file'])
+        result = diarize_plot(PROJECT_BASE_PATH + serializer.data['audio_file'])
         response = FileResponse(result, filename="result.png")
         return response
 
@@ -58,8 +64,8 @@ class VoiceASRAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         print(serializer.data['audio_file'])
-        asr_result = asr('.' + serializer.data['audio_file'])
-        diarize_result = diarize('.' + serializer.data['audio_file'])
+        asr_result = asr(PROJECT_BASE_PATH + serializer.data['audio_file'])
+        diarize_result = diarize(PROJECT_BASE_PATH + serializer.data['audio_file'])
         result = aggragate_asr_diarization(asr_result, diarize_result)
         return Response(result, status=status.HTTP_200_OK)
 
@@ -72,7 +78,7 @@ class VoiceRttmAsyncAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         print(serializer.data['audio_file'])
-        res = diarize_task.delay('.' + serializer.data['audio_file'])
+        res = diarize_task.delay(PROJECT_BASE_PATH + serializer.data['audio_file'])
 
         return Response(res.id, status=status.HTTP_200_OK)
 
@@ -103,7 +109,7 @@ class VoiceASRAsyncAPIView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         serializer.save()
         print(serializer.data['audio_file'])
-        res = asr_diarize_task.delay('.' + serializer.data['audio_file'])
+        res = asr_diarize_task.delay(PROJECT_BASE_PATH + serializer.data['audio_file'])
 
         return Response(res.id, status=status.HTTP_200_OK)
 

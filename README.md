@@ -9,4 +9,37 @@ telegram bot is an useful and simple choice to use speaker diarization. you can 
 
 ## Installation
 
+to install dependecies:
+
+```bash
+make install
+```
+
 ## Use
+
+to run all services:
+```bash
+make run
+```
+
+to run specific service:
+```bash
+# server
+make runserver
+```
+```bash
+# celery
+make runcelery:
+```
+```bash
+# telegram bot
+make runtelbot
+```
+```bash
+# gradio
+make rungradio
+```
+
+### swagger
+
+to see the available APIs go to [swagger](http://localhost:8000/swagger/)
