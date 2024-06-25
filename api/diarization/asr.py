@@ -73,6 +73,9 @@ def asr(audio_path):
     if not audio_file:
         return
     
+    return asr_file(audio_file)
+
+def asr_file(audio_file):
     auth_token, api_key = _login()
     if auth_token == None or api_key == None:
         return
@@ -84,4 +87,3 @@ def asr(audio_path):
     result = _task_progress(progress_url)
 
     return result
-    
