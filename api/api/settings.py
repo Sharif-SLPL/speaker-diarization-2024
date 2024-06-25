@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'diarization.apps.DiarizationConfig',
     'django_celery_results',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,11 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+     'DEFAULT_PARSER_CLASSES': (
+          'rest_framework.parsers.FormParser',
+          'rest_framework.parsers.MultiPartParser',
+        #   'rest_framework.parsers.JSONParser',
+   )
+}

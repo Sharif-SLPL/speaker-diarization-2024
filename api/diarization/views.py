@@ -19,7 +19,14 @@ from celery.result import AsyncResult
 
 from .models import Task
 
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
+task_id_param = openapi.Parameter('task_id', openapi.IN_QUERY, description="task id", type=openapi.TYPE_STRING)
+task_response = openapi.Response('response description', TaskSerializer)
+
 class VoiceRttmAPIView(APIView):
+    @swagger_auto_schema(request_body=VoiceSerializer, responses={200: 'rttm'})
     def post(self, request, *args, **kwargs):
         serializer = VoiceSerializer(data=request.data)
         if not serializer.is_valid():
@@ -31,6 +38,7 @@ class VoiceRttmAPIView(APIView):
 
 
 class VoicePlotAPIView(APIView):
+    @swagger_auto_schema(request_body=VoiceSerializer, responses={200: 'plot'})
     def post(self, request, *args, **kwargs):
         serializer = VoiceSerializer(data=request.data)
         if not serializer.is_valid():
@@ -43,6 +51,7 @@ class VoicePlotAPIView(APIView):
 
 
 class VoiceASRAPIView(APIView):
+    @swagger_auto_schema(request_body=VoiceSerializer, responses={200: 'asr+rttm'})
     def post(self, request, *args, **kwargs):
         serializer = VoiceSerializer(data=request.data)
         if not serializer.is_valid():
@@ -56,6 +65,7 @@ class VoiceASRAPIView(APIView):
 
 
 class VoiceRttmAsyncAPIView(APIView):
+    @swagger_auto_schema(request_body=VoiceSerializer, responses={200: 'task_id'})
     def post(self, request, *args, **kwargs):
         serializer = VoiceSerializer(data=request.data)
         if not serializer.is_valid():
@@ -67,6 +77,7 @@ class VoiceRttmAsyncAPIView(APIView):
         return Response(res.id, status=status.HTTP_200_OK)
 
 class VoiceRttmStatusAPIView(APIView):
+    @swagger_auto_schema(manual_parameters=[task_id_param], responses={200: task_response})
     def get(self, request, *args, **kwargs):
         task_id = request.query_params.get('task_id')
         if task_id is None:
@@ -85,6 +96,7 @@ class VoiceRttmStatusAPIView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class VoiceASRAsyncAPIView(APIView):
+    @swagger_auto_schema(request_body=VoiceSerializer, responses={200: 'task_id'})
     def post(self, request, *args, **kwargs):
         serializer = VoiceSerializer(data=request.data)
         if not serializer.is_valid():
@@ -96,6 +108,7 @@ class VoiceASRAsyncAPIView(APIView):
         return Response(res.id, status=status.HTTP_200_OK)
 
 class VoiceASRStatusAPIView(APIView):
+    @swagger_auto_schema(manual_parameters=[task_id_param], responses={200: task_response})
     def get(self, request, *args, **kwargs):
         task_id = request.query_params.get('task_id')
         if task_id is None:
