@@ -13,3 +13,4 @@ pretrained_models
 */.env
 
 ./api/db.sqlite3
+./api/results.sqlite
