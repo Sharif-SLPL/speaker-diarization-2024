@@ -16,20 +16,28 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+MAX_MESSAGE_LENGTH = 4096
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi\send me a vocie, i recognize speackers in the vocie :)")
+    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hi\nsend me a vocie, i recognize speackers in the vocie :)")
 
 
 async def handle_diarization(update: Update, context: CallbackContext, file):
+    print("processing request ...")
     out = io.BytesIO()
     await file.download_to_memory(out)
     out.seek(0)
     result = d.diarize(out)
     parsed = d.parse_diarize_result(result)
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=parsed)
-    # await context.bot.send_photo(update.message.chat_id, photo=result)
     out.close()
+    
+    if len(parsed) <= MAX_MESSAGE_LENGTH:
+        await context.bot.send_message(chat_id=update.effective_chat.id, reply_to_message_id=update.message.message_id, text=parsed)
+    else:
+        file_like_object = io.BytesIO()
+        file_like_object.write(parsed.encode('utf-8'))
+        file_like_object.seek(0)
+        await context.bot.send_document(chat_id=update.effective_chat.id, reply_to_message_id=update.message.message_id, document=file_like_object, filename="result.txt")
 
 
 async def handle_voice(update: Update, context: CallbackContext):
