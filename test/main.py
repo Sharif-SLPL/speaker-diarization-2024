@@ -6,6 +6,8 @@ from typing import List
 import diarization as d
 import rttm
 
+import spyder
+
 
 def test_rttm(result_list, expected_list):
     result_index = 0
@@ -56,6 +58,12 @@ def test_rttm(result_list, expected_list):
     print(f'result count:{len(result_list)}, expected count:{len(expected_list)}, errors_count:{errors_count}, errors_duration:{errors_duration}s')
 
 
+def der(result_list, expected_list):
+    ref = [(str(item.label), item.start, item.end) for item in expected_list]
+    hyp = [(str(item.label), item.start, item.end) for item in result_list]
+
+    print(spyder.DER(ref, hyp))
+
 def test_audio_file(audio_path, rttm_path):
     with open(rttm_path, "r") as rttm_file:
         rttm_raw = rttm_file.read()
@@ -67,13 +75,32 @@ def test_audio_file(audio_path, rttm_path):
     # print(result)
     # print(expected)
     test_rttm(result, expected)
+    der(result, expected)
+
+def test_rttm_file(ref_rttm, sys_rttm):
+    with open(ref_rttm, "r") as ref_file:
+        ref_raw = ref_file.read()
+        expected = rttm.parse_to_rttm_list(json.loads(ref_raw))
+    
+    with open(sys_rttm, "rb") as sys_file:
+        result = rttm.parse_from_rttm_list(sys_file)
+
+    test_rttm(result, expected)
+    der(result, expected)
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print("two arguments are necessary: <audio path> <rttm path>")
         sys.exit()
-    audio_path = sys.argv[1]
-    rttm_path = sys.argv[2]
+    elif len(sys.argv) == 3:
+        audio_path = sys.argv[1]
+        rttm_path = sys.argv[2]
+        test_audio_file(audio_path, rttm_path)
+    elif len(sys.argv) == 4:
+        test_rttm_file(sys.argv[2], sys.argv[3])
+    else:
+        print("two arguments are necessary: <audio path> <rttm path>")
+        print("or: rttm <ref rttm path> <sys rttm path>")
+        sys.exit()
 
-    test_audio_file(audio_path, rttm_path)
