@@ -17,7 +17,9 @@ def handle_process_btn(recorded, uploaded):
     else:
         return "record or upload an audio file"
     audio_file = open(audio_path, "rb")
-    result = d.diarize(audio_file)
+    result = d.async_diarize(audio_file)
+    if result == None:
+        return 'reached timeout'
     return d.parse_diarize_result(result)
 
 
@@ -34,7 +36,7 @@ def handle_process_btn_image(recorded, uploaded):
     return im
 
 
-with gr.Blocks() as demo:
+with gr.Blocks().queue(max_size=5) as demo:
     gr.Markdown(
         """
     # Speaker Diarization
@@ -50,4 +52,4 @@ with gr.Blocks() as demo:
                       recorded_audio, uploaded_audio], outputs=output, api_name="process")
 
 
-demo.launch(share=False)
+    demo.launch(share=False)

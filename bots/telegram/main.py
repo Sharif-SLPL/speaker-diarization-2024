@@ -27,9 +27,12 @@ async def handle_diarization(update: Update, context: CallbackContext, file):
     out = io.BytesIO()
     await file.download_to_memory(out)
     out.seek(0)
-    result = d.diarize(out)
-    parsed = d.parse_diarize_result(result)
+    result = d.async_diarize(out)
     out.close()
+    if result == None:
+        await context.bot.send_message(chat_id=update.effective_chat.id, reply_to_message_id=update.message.message_id, text='timeout reached!')
+        return
+    parsed = d.parse_diarize_result(result)
     
     if len(parsed) <= MAX_MESSAGE_LENGTH:
         await context.bot.send_message(chat_id=update.effective_chat.id, reply_to_message_id=update.message.message_id, text=parsed)

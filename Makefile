@@ -5,10 +5,12 @@ Make=make
 Pip=pip
 
 runserver:
-	$(Python) ./api/manage.py runserver
+	cd api && \
+	$(Python) manage.py runserver
 
 runcelery:
-	$(Celery) --workdir ./api -A api worker -l INFO
+	cd api && \
+	$(Celery) -A api worker -l INFO
 
 runtelbot:
 	$(Python) ./bots/telegram/main.py

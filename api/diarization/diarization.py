@@ -1,12 +1,18 @@
 import os
 from .diarization_model import run_simple_diarizer as model_diarize
 
+MULTIPLE_SPEAKER_SIZE_LIMIT = 1048576
+
 def diarize(audio_path):
     # print(audio_file)
     # file_path = audio_file.temporary_file_path()
     # audio_path = '.' + audio_path
     # print("=====", audio_path)
-    segments = model_diarize.diarize(audio_path)
+    num_speakers=2
+    file_size = os.path.getsize(audio_path)
+    if file_size > MULTIPLE_SPEAKER_SIZE_LIMIT:
+        num_speakers=6
+    segments = model_diarize.diarize(audio_path, num_speakers)
     
     return segments
 

@@ -14,3 +14,4 @@ pretrained_models
 
 ./api/db.sqlite3
 ./api/results.sqlite
+results.sqlite

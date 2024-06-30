@@ -29,7 +29,8 @@ def aggragate_asr_diarization(asr_result, diarize_result):
 
             words.append(asr_word)
             asr_index += 1
-
+        if len(words) == 0:
+            continue
         result.append({"start": start, "end": end,
                       "speaker": speaker, "text": ' '.join(words)})
 
