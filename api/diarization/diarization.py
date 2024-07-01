@@ -4,10 +4,6 @@ from .diarization_model import run_simple_diarizer as model_diarize
 MULTIPLE_SPEAKER_SIZE_LIMIT = 1048576
 
 def diarize(audio_path):
-    # print(audio_file)
-    # file_path = audio_file.temporary_file_path()
-    # audio_path = '.' + audio_path
-    # print("=====", audio_path)
     num_speakers=2
     file_size = os.path.getsize(audio_path)
     if file_size > MULTIPLE_SPEAKER_SIZE_LIMIT:
@@ -18,10 +14,6 @@ def diarize(audio_path):
 
 
 def diarize_plot(audio_path):
-    # print(audio_file)
-    # file_path = audio_file.temporary_file_path()
-    # audio_path = '.' + audio_path
-    # print("=====", audio_path)
     plot = model_diarize.diarizePlot(audio_path)
     
     return plot

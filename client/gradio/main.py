@@ -5,9 +5,6 @@ from dotenv import load_dotenv
 import diarization as d
 from PIL import Image
 
-# load_dotenv()
-# diarization_api = os.getenv('')
-
 
 def handle_process_btn(recorded, uploaded):
     if recorded:

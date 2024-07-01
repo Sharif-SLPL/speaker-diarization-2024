@@ -15,10 +15,6 @@ def diarize(wav_file: str, num_speakers=2):
     segments = diar.diarize(wav_file=wav_file,
                             num_speakers=num_speakers,
                             outfile=f'{wav_file.rstrip(".wav")}_simple.rttm')
-    # print(segments)
-    # signal, fs = sf.read(wav_file)
-    # combined_waveplot(signal, fs, segments)
-    # plt.show()
     return aggregate_segments(segments)
 
 
@@ -30,11 +26,9 @@ def diarizePlot(wav_file: str, num_speakers=2):
     segments = diar.diarize(wav_file=wav_file,
                             num_speakers=2,
                             outfile=f'{wav_file.rstrip(".wav")}_simple.rttm')
-    # print(segments)
     signal, fs = sf.read(wav_file)
     plt.switch_backend('AGG')
     fig = combined_waveplot(signal, fs, segments)
-    # plt.show()
     img_buf = io.BytesIO()
     fig.savefig(img_buf, format='png')
     img_buf.seek(0)
